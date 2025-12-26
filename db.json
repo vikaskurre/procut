@@ -1,0 +1,412 @@
+{
+  "portfolio": [
+    {
+      "id": 1,
+      "title": "Luxury Real Estate Drone Footage",
+      "description": "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
+      "category": "Real Estate",
+      "order": 1,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:00:00.000Z",
+      "updatedAt": "2025-12-26T10:00:00.000Z",
+      "ownerId": ""
+    },
+    {
+      "id": 2,
+      "title": "Corporate Interview Reel",
+      "description": "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
+      "category": "Interviews",
+      "order": 2,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:00:00.000Z",
+      "updatedAt": "2025-12-26T10:00:00.000Z",
+      "ownerId": ""
+    },
+    {
+      "id": 3,
+      "title": "Viral Social Media Reel",
+      "description": "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
+      "category": "Reels",
+      "order": 3,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:00:00.000Z",
+      "updatedAt": "2025-12-26T10:00:00.000Z",
+      "ownerId": ""
+    },
+    {
+      "id": 4,
+      "title": "Brand Commercial Campaign",
+      "description": "Complete brand storytelling through visual narrative. From concept to final delivery with professional post-production.",
+      "category": "Ads",
+      "order": 4,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/miBDRJuQ6Cs?si=mqcJHwOublgVU3qf"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:00:00.000Z",
+      "updatedAt": "2025-12-26T10:00:00.000Z",
+      "ownerId": ""
+    },
+    {
+      "id": 5,
+      "title": "Cinematic Wedding Film",
+      "description": "Emotional storytelling through cinematic wedding photography. Artistic composition and professional editing for memorable moments.",
+      "category": "Cinematic",
+      "order": 5,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/4rpSmRU-Yi8?si=71Q_8W9UcdYoOg7q"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:00:00.000Z",
+      "updatedAt": "2025-12-26T10:00:00.000Z",
+      "ownerId": ""
+    }
+  ],
+  "videos": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "title": "Cinematic Travel Vlog",
+      "description": "A stunning travel vlog with cinematic shots.",
+      "tags": [
+        "travel",
+        "vlog",
+        "cinematic"
+      ],
+      "category": "YouTube",
+      "order": 1,
+      "watermark": true,
+      "status": "Live",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "createdAt": "2025-12-21T10:00:00Z"
+        }
+      ],
+      "thumbnailUrl": "/portfolio-thumb-1.jpg",
+      "createdAt": "2025-12-21T10:00:00Z",
+      "updatedAt": "2025-12-21T10:00:00Z",
+      "ownerId": "user-1-owner"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-2345-678901bcdefa",
+      "title": "Nike Commercial Edit",
+      "description": "A fan-made commercial for Nike.",
+      "tags": [
+        "nike",
+        "commercial",
+        "ads"
+      ],
+      "category": "Ads",
+      "order": 2,
+      "watermark": false,
+      "status": "Private",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://www.vimeo.com/123456789",
+          "createdAt": "2025-12-20T14:30:00Z"
+        }
+      ],
+      "thumbnailUrl": "/portfolio-thumb-2.jpg",
+      "createdAt": "2025-12-20T14:30:00Z",
+      "updatedAt": "2025-12-20T14:30:00Z",
+      "ownerId": "user-1-owner"
+    },
+    {
+      "title": "ytuty",
+      "description": "rtuytut",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/4rpSmRU-Yi8?si=71Q_8W9UcdYoOg7q",
+          "createdAt": "2025-12-22T07:54:12.586Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "282c0c7a-0a7a-4f61-a5a1-7ed04ab9df45",
+      "createdAt": "2025-12-22T07:54:12.593Z",
+      "updatedAt": "2025-12-22T07:54:12.593Z"
+    },
+    {
+      "title": "retger",
+      "description": "reyrtyrt",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/4rpSmRU-Yi8?si=71Q_8W9UcdYoOg7q",
+          "createdAt": "2025-12-22T07:56:40.194Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "3cd16eff-dcfb-40a0-a6aa-f77e9e8a95c5",
+      "createdAt": "2025-12-22T07:56:40.203Z",
+      "updatedAt": "2025-12-22T07:56:40.203Z"
+    },
+    {
+      "title": "drtujtt",
+      "description": "rtuyhftuhjfygujty",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/miBDRJuQ6Cs?si=mqcJHwOublgVU3qf",
+          "createdAt": "2025-12-22T08:03:03.746Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "14a39023-fea4-4b15-842f-fe40063d4735",
+      "createdAt": "2025-12-22T08:03:03.837Z",
+      "updatedAt": "2025-12-22T08:03:03.837Z"
+    },
+    {
+      "title": "vikas ",
+      "description": "ergrewg",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/miBDRJuQ6Cs?si=5J-SljTRvW9wipKL",
+          "createdAt": "2025-12-22T08:12:21.554Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "d5013fa3-3ba7-4cd4-b3be-72f27125290d",
+      "createdAt": "2025-12-22T08:12:21.694Z",
+      "updatedAt": "2025-12-22T08:12:21.694Z"
+    },
+    {
+      "title": "vikas",
+      "description": "hjghjghj",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm",
+          "createdAt": "2025-12-26T09:17:55.639Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "f7393334-b1a4-4d26-8998-f71a84f64944",
+      "createdAt": "2025-12-26T09:17:55.649Z",
+      "updatedAt": "2025-12-26T09:17:55.649Z"
+    },
+    {
+      "title": "u7yutyutytyu",
+      "description": "uyutut",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm",
+          "createdAt": "2025-12-26T09:18:47.070Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "ebed0e45-02c5-40ca-95d5-719f60329ac8",
+      "createdAt": "2025-12-26T09:18:47.078Z",
+      "updatedAt": "2025-12-26T09:18:47.078Z"
+    },
+    {
+      "title": "jhgjghj",
+      "description": "tgyutyutyutuy",
+      "category": "YouTube",
+      "versions": [
+        {
+          "version": 1,
+          "videoUrl": "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-",
+          "createdAt": "2025-12-26T09:56:11.005Z"
+        }
+      ],
+      "tags": [],
+      "order": 0,
+      "watermark": false,
+      "status": "Private",
+      "thumbnailUrl": "",
+      "id": "1017295d-93d7-4090-a6a8-461d4f77eb0e",
+      "createdAt": "2025-12-26T09:56:11.013Z",
+      "updatedAt": "2025-12-26T09:56:11.013Z"
+    },
+    {
+      "title": "tgdrdrdr",
+      "description": "tfcgybgy",
+      "category": "Reels",
+      "order": 44,
+      "visible": false,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:33:37.672Z",
+      "updatedAt": "2025-12-26T10:33:37.672Z",
+      "ownerId": "",
+      "id": null
+    },
+    {
+      "title": "hgvhfhgfgh",
+      "description": "bvhgvh",
+      "category": "Reels",
+      "order": 1,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:49:14.037Z",
+      "updatedAt": "2025-12-26T10:49:14.037Z",
+      "ownerId": "",
+      "id": null
+    },
+    {
+      "title": "tyujyityi",
+      "description": "tyuitruityi",
+      "category": "Reels",
+      "order": 5,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T10:52:23.678Z",
+      "updatedAt": "2025-12-26T10:52:23.678Z",
+      "ownerId": "",
+      "id": null
+    },
+    {
+      "title": "yutyryt",
+      "description": "jkhgjgjh",
+      "category": "Reels",
+      "order": 8,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/AGsn2ycFRqI?si=nJVi6GprdTunFXge"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T11:05:13.869Z",
+      "updatedAt": "2025-12-26T11:05:13.869Z",
+      "ownerId": "",
+      "id": null
+    },
+    {
+      "title": "yjhgfhf",
+      "description": "ygfvhgfhg",
+      "category": "Reels",
+      "order": 5555555555,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/AGsn2ycFRqI?si=nJVi6GprdTunFXge"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T11:06:15.125Z",
+      "updatedAt": "2025-12-26T11:06:15.125Z",
+      "ownerId": "",
+      "id": null
+    },
+    {
+      "title": "GHFHGFHGF",
+      "description": "VHHJH",
+      "category": "Reels",
+      "order": 888888,
+      "visible": true,
+      "media": [
+        {
+          "type": "video",
+          "url": "https://youtu.be/AGsn2ycFRqI?si=nJVi6GprdTunFXge"
+        }
+      ],
+      "thumbnailUrl": "",
+      "createdAt": "2025-12-26T11:10:35.093Z",
+      "updatedAt": "2025-12-26T11:10:35.093Z",
+      "ownerId": "",
+      "id": null
+    }
+  ],
+  "users": [
+    {
+      "id": "user-1-owner",
+      "name": "Admin Owner",
+      "email": "owner@procut.com",
+      "role": "Owner",
+      "password": "adminpassword"
+    },
+    {
+      "id": "user-2-editor",
+      "name": "First Editor",
+      "email": "editor@procut.com",
+      "role": "Editor",
+      "password": "editorpassword"
+    }
+  ],
+  "quotes": [
+  ]
+}
