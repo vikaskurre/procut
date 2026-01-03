@@ -9,20 +9,20 @@ async function readDb() {
     const data = await fs.readFile(dbPath, 'utf8');
     return JSON.parse(data);
   } catch (error) {
-    if (error.code === 'ENOENT') {
+    if ((error as any).code === 'ENOENT') {
       return { portfolio: [] };
     }
     throw error;
   }
 }
 
-async function writeDb(data) {
+async function writeDb(data: any) {
   await fs.writeFile(dbPath, JSON.stringify(data, null, 2));
 }
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const db = await readDb();
-  const item = db.portfolio.find(p => p.id === parseInt(params.id));
+  const item = db.portfolio.find((p: any) => p.id === parseInt(params.id));
 
   if (!item) {
     return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
@@ -33,7 +33,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   const db = await readDb();
-  const index = db.portfolio.findIndex(p => p.id === parseInt(params.id));
+  const index = db.portfolio.findIndex((p: any) => p.id === parseInt(params.id));
 
   if (index === -1) {
     return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
@@ -52,7 +52,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const db = await readDb();
   const initialLength = db.portfolio.length;
-  db.portfolio = db.portfolio.filter(p => p.id !== parseInt(params.id));
+  db.portfolio = db.portfolio.filter((p: any) => p.id !== parseInt(params.id));
 
   if (db.portfolio.length === initialLength) {
     return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
