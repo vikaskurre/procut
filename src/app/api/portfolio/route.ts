@@ -1,39 +1,103 @@
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
 
-const dbPath = path.join(process.cwd(), 'db.json');
-
-async function readDb() {
-  try {
-    const data = await fs.readFile(dbPath, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    // If the file doesn't exist, return a default structure
-    if ((error as any).code === 'ENOENT') {
-      return { videos: [] };
-    }
-    throw error;
+// Portfolio data - hardcoded for Netlify compatibility
+const portfolioData = [
+  {
+    "id": 1,
+    "title": "Luxury Real Estate Drone Footage",
+    "description": "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
+    "category": "Real Estate",
+    "order": 1,
+    "visible": true,
+    "media": [
+      {
+        "type": "video",
+        "url": "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400"
+      }
+    ],
+    "thumbnailUrl": "",
+    "createdAt": "2025-12-26T10:00:00.000Z",
+    "updatedAt": "2025-12-26T10:00:00.000Z",
+    "ownerId": ""
+  },
+  {
+    "id": 2,
+    "title": "Corporate Interview Reel",
+    "description": "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
+    "category": "Interviews",
+    "order": 2,
+    "visible": true,
+    "media": [
+      {
+        "type": "video",
+        "url": "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm"
+      }
+    ],
+    "thumbnailUrl": "",
+    "createdAt": "2025-12-26T10:00:00.000Z",
+    "updatedAt": "2025-12-26T10:00:00.000Z",
+    "ownerId": ""
+  },
+  {
+    "id": 3,
+    "title": "Viral Social Media Reel",
+    "description": "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
+    "category": "Reels",
+    "order": 3,
+    "visible": true,
+    "media": [
+      {
+        "type": "video",
+        "url": "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-"
+      }
+    ],
+    "thumbnailUrl": "",
+    "createdAt": "2025-12-26T10:00:00.000Z",
+    "updatedAt": "2025-12-26T10:00:00.000Z",
+    "ownerId": ""
+  },
+  {
+    "id": 4,
+    "title": "Brand Commercial Campaign",
+    "description": "Complete brand storytelling through visual narrative. From concept to final delivery with professional post-production.",
+    "category": "Ads",
+    "order": 4,
+    "visible": true,
+    "media": [
+      {
+        "type": "video",
+        "url": "https://youtu.be/miBDRJuQ6Cs?si=mqcJHwOublgVU3qf"
+      }
+    ],
+    "thumbnailUrl": "",
+    "createdAt": "2025-12-26T10:00:00.000Z",
+    "updatedAt": "2025-12-26T10:00:00.000Z",
+    "ownerId": ""
+  },
+  {
+    "id": 5,
+    "title": "Cinematic Wedding Film",
+    "description": "Emotional storytelling through cinematic wedding photography. Artistic composition and professional editing for memorable moments.",
+    "category": "Cinematic",
+    "order": 5,
+    "visible": true,
+    "media": [
+      {
+        "type": "video",
+        "url": "https://youtu.be/4rpSmRU-Yi8?si=71Q_8W9UcdYoOg7q"
+      }
+    ],
+    "thumbnailUrl": "",
+    "createdAt": "2025-12-26T10:00:00.000Z",
+    "updatedAt": "2025-12-26T10:00:00.000Z",
+    "ownerId": ""
   }
-}
+];
 
 export async function GET() {
-  const db = await readDb();
-  return NextResponse.json(db.portfolio || []);
+  return NextResponse.json(portfolioData);
 }
 
-export async function POST(request: Request) {
-  const db = await readDb();
-  const newPortfolioItem = await request.json();
-
-  // Generate a new ID
-  const newId = db.videos.length > 0 ? Math.max(...db.videos.map((item: { id: number }) => item.id)) + 1 : 1;
-  newPortfolioItem.id = newId;
-
-  db.videos.push(newPortfolioItem);
-
-  await fs.writeFile(dbPath, JSON.stringify(db, null, 2));
-
-  return NextResponse.json(newPortfolioItem, { status: 201 });
-}
+// POST method removed for Netlify compatibility
+// Portfolio data is now read-only for the frontend
