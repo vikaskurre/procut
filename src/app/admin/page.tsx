@@ -539,20 +539,9 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     };
 
     const fetchQuotes = async () => {
-        try {
-            const response = await fetch('/api/quotes');
-            if (!response.ok) {
-                throw new Error('Failed to fetch quotes');
-            }
-            const data = await response.json();
-            setQuotes(data);
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('Failed to fetch quotes');
-            }
-        }
+        // Contact form submissions are sent via Formspree to email
+        // Setting empty array since we don't store submissions locally
+        setQuotes([]);
     };
 
     const updateQuoteStatus = async (quoteId: string, status: 'pending' | 'contacted' | 'completed') => {
@@ -662,69 +651,23 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
                     </div>
                 ) : (
                     <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-                        {isLoading ? (
-                            <p className="p-8 text-center">Loading quotes...</p>
-                        ) : error ? (
-                            <p className="p-8 text-center text-red-500">{error}</p>
-                        ) : (
-                            <table className="min-w-full">
-                                <thead className="bg-gray-700 text-sm text-gray-400 uppercase">
-                                    <tr>
-                                        <th className="p-4 text-left">Name</th>
-                                        <th className="p-4 text-left">Contact</th>
-                                        <th className="p-4 text-left">Project</th>
-                                        <th className="p-4 text-left">Status</th>
-                                        <th className="p-4 text-left">Date</th>
-                                        <th className="p-4 text-left">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-700">
-                                    {quotes.length > 0 ? quotes.map(quote => (
-                                        <tr key={quote.id}>
-                                            <td className="p-4 text-white font-semibold">{quote.name}</td>
-                                            <td className="p-4 text-gray-300">{quote.emailWhatsApp}</td>
-                                            <td className="p-4 text-gray-300 max-w-xs truncate" title={quote.projectDetails}>
-                                                {quote.projectDetails.substring(0, 50)}...
-                                            </td>
-                                            <td className="p-4">
-                                                <select
-                                                    value={quote.status}
-                                                    onChange={(e) => updateQuoteStatus(quote.id, e.target.value as 'pending' | 'contacted' | 'completed')}
-                                                    className="bg-gray-700 text-white rounded px-2 py-1 text-sm"
-                                                >
-                                                    <option value="pending">Pending</option>
-                                                    <option value="contacted">Contacted</option>
-                                                    <option value="completed">Completed</option>
-                                                </select>
-                                            </td>
-                                            <td className="p-4 text-gray-400 text-sm">
-                                                {new Date(quote.createdAt).toLocaleDateString()}
-                                            </td>
-                                            <td className="p-4">
-                                                <button
-                                                    onClick={() => window.open(`https://wa.me/${quote.emailWhatsApp.replace(/[^0-9]/g, '')}`, '_blank')}
-                                                    className="p-2 text-green-400 hover:text-green-300 mr-2"
-                                                    title="Contact via WhatsApp"
-                                                >
-                                                    📱
-                                                </button>
-                                                <button
-                                                    onClick={() => window.open(`mailto:${quote.emailWhatsApp}`, '_blank')}
-                                                    className="p-2 text-blue-400 hover:text-blue-300"
-                                                    title="Send Email"
-                                                >
-                                                    ✉️
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )) : (
-                                        <tr>
-                                            <td colSpan={6} className="p-8 text-center text-gray-500">No quote requests found.</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        )}
+                        <div className="p-8 text-center">
+                            <div className="text-6xl mb-4">📧</div>
+                            <h3 className="text-xl font-semibold text-white mb-2">Contact Form Submissions</h3>
+                            <p className="text-gray-400 mb-4">
+                                All contact form submissions are automatically sent to your email via Formspree.
+                            </p>
+                            <div className="bg-gray-700 rounded-lg p-4 text-left max-w-md mx-auto">
+                                <p className="text-sm text-gray-300">
+                                    <strong>Email:</strong> vikaskurre80@gmail.com<br/>
+                                    <strong>Service:</strong> Formspree + SendGrid<br/>
+                                    <strong>Status:</strong> ✅ Working
+                                </p>
+                            </div>
+                            <p className="text-sm text-gray-500 mt-4">
+                                Check your email inbox for all contact form submissions!
+                            </p>
+                        </div>
                     </div>
                 )}
             </main>
