@@ -50,7 +50,7 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (user: User) => void })
                 <div className="flex justify-center mb-6">
                     
                 </div>
-                <h1 className="text-3xl font-bold text-center mb-6 text-neon-blue">Admin Panel</h1>
+                <h1 className="text-3xl font-bold text-center mb-6 text-neon-blue">Procut Admin Panel</h1>
                 <input
                     type="email"
                     value={email}
