@@ -54,6 +54,15 @@ To run this project locally, you will need Node.js (version 18 or higher) and np
 -   **Google Analytics Placeholder:** Ready for your GA Measurement ID.
 -   **Performance Optimizations:** Lazy loading for videos (`preload="none"`) and Next.js's built-in image optimization/code minification.
 
+## Contact Form Integration
+
+The contact form has been configured to send emails using Formspree (free) with SendGrid delivery. Form submissions are automatically emailed to vikaskurre80@gmail.com.
+
+### Formspree Setup
+- Form ID: `mvzglnzg`
+- Free plan: 50 submissions/month
+- SendGrid integration for reliable email delivery
+
 ## Customization & Content Management
 
 ### Replacing Placeholder Content
