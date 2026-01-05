@@ -1,49 +1,8 @@
 "use client"; // This is a client component
 
-import { useState } from 'react';
 import { motion } from "framer-motion";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    emailWhatsApp: '',
-    projectDetails: '',
-    referenceStyle: '',
-    rawFootageLink: '',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/quotes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Thank you for your message! We will get back to you soon.');
-        setFormData({
-          name: '',
-          emailWhatsApp: '',
-          projectDetails: '',
-          referenceStyle: '',
-          rawFootageLink: '',
-        });
-      } else {
-        alert('There was an error submitting your request. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error submitting your request. Please try again.');
-    }
-  };
 
   const faqItems = [
     {
@@ -103,7 +62,11 @@ export default function Contact() {
           variants={itemVariants}
         >
           <h2 className="text-3xl font-semibold text-neon-purple mb-6">Request Premium Quote</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            action="https://formspree.io/f/mvzglnzg"
+            method="POST"
+            className="space-y-6"
+          >
             <div>
               <label htmlFor="name" className="block text-lg font-medium text-white mb-2">
                 Your Name
@@ -112,8 +75,6 @@ export default function Contact() {
                 type="text"
                 id="name"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-neon-blue focus:border-transparent"
                 required
               />
@@ -127,8 +88,6 @@ export default function Contact() {
                 type="text"
                 id="emailWhatsApp"
                 name="emailWhatsApp"
-                value={formData.emailWhatsApp}
-                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-neon-blue focus:border-transparent"
                 required
               />
@@ -142,8 +101,6 @@ export default function Contact() {
                 id="projectDetails"
                 name="projectDetails"
                 rows={4}
-                value={formData.projectDetails}
-                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-neon-blue focus:border-transparent"
                 required
               ></textarea>
@@ -157,8 +114,6 @@ export default function Contact() {
                 id="referenceStyle"
                 name="referenceStyle"
                 rows={2}
-                value={formData.referenceStyle}
-                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-neon-blue focus:border-transparent"
               ></textarea>
             </div>
@@ -171,8 +126,6 @@ export default function Contact() {
                 type="url"
                 id="rawFootageLink"
                 name="rawFootageLink"
-                value={formData.rawFootageLink}
-                onChange={handleChange}
                 className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-neon-blue focus:border-transparent"
               />
             </div>
