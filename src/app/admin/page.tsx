@@ -126,30 +126,28 @@ const AddPortfolioModal = ({ onClose, onAdd }: { onClose: () => void, onAdd: () 
         setIsLoading(true);
         setError(null);
 
-        const newItem = {
-            title,
-            description,
-            category,
-            order,
-            visible,
-            media: [{ type: mediaType, url: mediaUrl }],
-            thumbnailUrl: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            ownerId: ''
-        };
-
         try {
-            const response = await fetch('/api/portfolio', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newItem),
-            });
+            const storedData = localStorage.getItem('portfolioItems');
+            const existingItems = storedData ? JSON.parse(storedData) : [];
 
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.message || 'Failed to add portfolio item');
-            }
+            const newId = existingItems.length > 0 ? Math.max(...existingItems.map((item: PortfolioItem) => item.id)) + 1 : 1;
+
+            const newItem = {
+                id: newId,
+                title,
+                description,
+                category,
+                order,
+                visible,
+                media: [{ type: mediaType, url: mediaUrl }],
+                thumbnailUrl: '',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                ownerId: ''
+            };
+
+            existingItems.push(newItem);
+            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
 
             onAdd();
         } catch (err) {
@@ -260,27 +258,28 @@ const EditPortfolioModal = ({ item, onClose, onUpdate }: { item: PortfolioItem, 
         setIsLoading(true);
         setError(null);
 
-        const updatedItem = {
-            title,
-            description,
-            category,
-            order,
-            visible,
-            media: [{ type: mediaType, url: mediaUrl }],
-            updatedAt: new Date().toISOString(),
-        };
-
         try {
-            const response = await fetch(`/api/portfolio/${item.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedItem),
-            });
+            const storedData = localStorage.getItem('portfolioItems');
+            if (!storedData) throw new Error('No portfolio data found');
 
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.message || 'Failed to update portfolio item');
-            }
+            const existingItems = JSON.parse(storedData);
+            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
+
+            if (itemIndex === -1) throw new Error('Portfolio item not found');
+
+            const updatedItem = {
+                ...existingItems[itemIndex],
+                title,
+                description,
+                category,
+                order,
+                visible,
+                media: [{ type: mediaType, url: mediaUrl }],
+                updatedAt: new Date().toISOString(),
+            };
+
+            existingItems[itemIndex] = updatedItem;
+            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
 
             onUpdate();
         } catch (err) {
@@ -384,15 +383,58 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
     const [activeTab, setActiveTab] = useState<'portfolio' | 'quotes'>('portfolio');
 
-    const fetchPortfolioItems = async () => {
+    const fetchPortfolioItems = () => {
         try {
-            // we are not setting loading to true here to avoid flashing
-            const response = await fetch('/api/portfolio');
-            if (!response.ok) {
-                throw new Error('Failed to fetch portfolio items');
+            const storedData = localStorage.getItem('portfolioItems');
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                setPortfolioItems(data);
+            } else {
+                // Initialize with default items if none exist
+                const defaultItems: PortfolioItem[] = [
+                    {
+                        id: 1,
+                        title: "Luxury Real Estate Drone Footage",
+                        description: "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
+                        category: "Real Estate",
+                        order: 1,
+                        visible: true,
+                        media: [{ type: "video", url: "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400" }],
+                        thumbnailUrl: "",
+                        createdAt: "2025-12-26T10:00:00.000Z",
+                        updatedAt: "2025-12-26T10:00:00.000Z",
+                        ownerId: ""
+                    },
+                    {
+                        id: 2,
+                        title: "Corporate Interview Reel",
+                        description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
+                        category: "Interviews",
+                        order: 2,
+                        visible: true,
+                        media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
+                        thumbnailUrl: "",
+                        createdAt: "2025-12-26T10:00:00.000Z",
+                        updatedAt: "2025-12-26T10:00:00.000Z",
+                        ownerId: ""
+                    },
+                    {
+                        id: 3,
+                        title: "Viral Social Media Reel",
+                        description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
+                        category: "Reels",
+                        order: 3,
+                        visible: true,
+                        media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
+                        thumbnailUrl: "",
+                        createdAt: "2025-12-26T10:00:00.000Z",
+                        updatedAt: "2025-12-26T10:00:00.000Z",
+                        ownerId: ""
+                    }
+                ];
+                localStorage.setItem('portfolioItems', JSON.stringify(defaultItems));
+                setPortfolioItems(defaultItems);
             }
-            const data = await response.json();
-            setPortfolioItems(data);
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -411,7 +453,7 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     }, []);
 
     const handleAddItem = () => {
-        fetchPortfolioItems();
+        fetchPortfolioItems(); // This will reload from localStorage
         setIsAddModalOpen(false);
     };
 
@@ -423,14 +465,13 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     const handleDelete = async (itemId: number) => {
         if (window.confirm('Are you sure you want to delete this portfolio item?')) {
             try {
-                const response = await fetch(`/api/portfolio/${itemId}`, {
-                    method: 'DELETE',
-                });
+                const storedData = localStorage.getItem('portfolioItems');
+                if (!storedData) throw new Error('No portfolio data found');
 
-                if (!response.ok) {
-                    throw new Error('Failed to delete portfolio item');
-                }
+                const existingItems = JSON.parse(storedData);
+                const filteredItems = existingItems.filter((item: PortfolioItem) => item.id !== itemId);
 
+                localStorage.setItem('portfolioItems', JSON.stringify(filteredItems));
                 fetchPortfolioItems();
             } catch (err) {
                 if (err instanceof Error) {
@@ -451,18 +492,20 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
         if (!targetItem) return;
 
         try {
-            // Swap orders
-            await fetch(`/api/portfolio/${item.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...item, order: targetOrder, updatedAt: new Date().toISOString() }),
-            });
-            await fetch(`/api/portfolio/${targetItem.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...targetItem, order: item.order, updatedAt: new Date().toISOString() }),
-            });
+            const storedData = localStorage.getItem('portfolioItems');
+            if (!storedData) throw new Error('No portfolio data found');
 
+            const existingItems = JSON.parse(storedData);
+            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
+            const targetIndex = existingItems.findIndex((i: PortfolioItem) => i.id === targetItem.id);
+
+            if (itemIndex === -1 || targetIndex === -1) return;
+
+            // Swap orders
+            existingItems[itemIndex] = { ...existingItems[itemIndex], order: targetOrder, updatedAt: new Date().toISOString() };
+            existingItems[targetIndex] = { ...existingItems[targetIndex], order: item.order, updatedAt: new Date().toISOString() };
+
+            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
             fetchPortfolioItems();
         } catch (err) {
             setError('Failed to reorder items');
@@ -478,18 +521,20 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
         if (!targetItem) return;
 
         try {
-            // Swap orders
-            await fetch(`/api/portfolio/${item.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...item, order: targetOrder, updatedAt: new Date().toISOString() }),
-            });
-            await fetch(`/api/portfolio/${targetItem.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...targetItem, order: item.order, updatedAt: new Date().toISOString() }),
-            });
+            const storedData = localStorage.getItem('portfolioItems');
+            if (!storedData) throw new Error('No portfolio data found');
 
+            const existingItems = JSON.parse(storedData);
+            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
+            const targetIndex = existingItems.findIndex((i: PortfolioItem) => i.id === targetItem.id);
+
+            if (itemIndex === -1 || targetIndex === -1) return;
+
+            // Swap orders
+            existingItems[itemIndex] = { ...existingItems[itemIndex], order: targetOrder, updatedAt: new Date().toISOString() };
+            existingItems[targetIndex] = { ...existingItems[targetIndex], order: item.order, updatedAt: new Date().toISOString() };
+
+            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
             fetchPortfolioItems();
         } catch (err) {
             setError('Failed to reorder items');
