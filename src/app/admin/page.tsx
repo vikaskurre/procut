@@ -28,6 +28,7 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (user: User) => void })
 
             if (response.ok) {
                 sessionStorage.setItem('user', JSON.stringify(data.user));
+                sessionStorage.setItem('isLoggedIn', 'true');
                 onLoginSuccess(data.user);
             } else {
                 setError(data.message || 'Invalid credentials');
