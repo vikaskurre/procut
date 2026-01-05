@@ -17,31 +17,27 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (user: User) => void })
     const handleLogin = async () => {
         setIsLoading(true);
         setError('');
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
 
-            const data = await response.json();
+        // Simple client-side authentication
+        const validEmail = 'vikaskurre80@gmail.com';
+        const validPassword = 'procut1000cr';
 
-            if (response.ok) {
-                sessionStorage.setItem('user', JSON.stringify(data.user));
-                sessionStorage.setItem('isLoggedIn', 'true');
-                onLoginSuccess(data.user);
-            } else {
-                setError(data.message || 'Invalid credentials');
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('An error occurred. Please try again.');
-            }
-        } finally {
-            setIsLoading(false);
+        if (email === validEmail && password === validPassword) {
+            const user = {
+                id: 'user-1-owner',
+                name: 'Vikas Kurre',
+                email: validEmail,
+                role: 'Owner' as const
+            };
+
+            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('isLoggedIn', 'true');
+            onLoginSuccess(user);
+        } else {
+            setError('Invalid credentials');
         }
+
+        setIsLoading(false);
     };
     
     return (
