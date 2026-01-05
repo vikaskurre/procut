@@ -1,7 +1,4 @@
-// Trigger rebuild
 // src/app/portfolio/page.tsx
-import fs from 'fs/promises';
-import path from 'path';
 import React from 'react';
 
 // Updated interface to match the new structure in db.json
@@ -91,19 +88,26 @@ const VideoPlayer = ({ src, poster }: { src: string; poster: string }) => {
   );
 };
 
+// Force dynamic rendering for real-time data
+export const dynamic = 'force-dynamic';
+
 const PortfolioPage = async () => {
-  // Fetch data directly from db.json on the server
-  const filePath = path.join(process.cwd(), 'db.json');
+  // Fetch data from the API endpoint
   let portfolioItems: PortfolioItem[] = [];
   try {
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const data = JSON.parse(fileContent);
-    // Filter for items that should be public/visible and sort by order
-    portfolioItems = (data.portfolio || [])
-      .filter((item: any) => item.visible === true)
-      .sort((a: any, b: any) => a.order - b.order);
+    const response = await fetch('/api/portfolio');
+
+    if (response.ok) {
+      const data = await response.json();
+      // Filter for items that should be public/visible and sort by order
+      portfolioItems = data
+        .filter((item: any) => item.visible === true)
+        .sort((a: any, b: any) => a.order - b.order);
+    } else {
+      console.error("Failed to fetch portfolio data:", response.statusText);
+    }
   } catch (error) {
-    console.error("Failed to read or parse db.json:", error);
+    console.error("Failed to fetch portfolio data:", error);
     // You could return an error message here if you want
   }
 
