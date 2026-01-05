@@ -56,12 +56,30 @@ To run this project locally, you will need Node.js (version 18 or higher) and np
 
 ## Contact Form Integration
 
-The contact form has been configured to send emails using Formspree (free) with SendGrid delivery. Form submissions are automatically emailed to vikaskurre80@gmail.com.
+The contact form now uses a custom API route with email notifications. When users submit the form, their information is saved to the database and an email notification is sent.
 
-### Formspree Setup
-- Form ID: `mvzglnzg`
-- Free plan: 50 submissions/month
-- SendGrid integration for reliable email delivery
+### Email Configuration
+
+To receive email notifications, configure SMTP settings in your `.env.local` file:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+NOTIFICATION_EMAIL=vikaskurre80@gmail.com
+```
+
+#### Gmail Setup:
+1. Enable 2-Factor Authentication on your Google Account
+2. Generate an App Password: https://myaccount.google.com/apppasswords
+3. Use your Gmail address as SMTP_USER and the generated app password as SMTP_PASS
+
+#### Other Email Providers:
+- **Outlook**: `SMTP_HOST=smtp-mail.outlook.com`
+- **Yahoo**: `SMTP_HOST=smtp.mail.yahoo.com`
+
+The form data is also stored locally in `db.json` for admin review via the `/admin` panel.
 
 ## Customization & Content Management
 

@@ -124,13 +124,7 @@ const AddPortfolioModal = ({ onClose, onAdd }: { onClose: () => void, onAdd: () 
         setError(null);
 
         try {
-            const storedData = localStorage.getItem('portfolioItems');
-            const existingItems = storedData ? JSON.parse(storedData) : [];
-
-            const newId = existingItems.length > 0 ? Math.max(...existingItems.map((item: PortfolioItem) => item.id)) + 1 : 1;
-
             const newItem = {
-                id: newId,
                 title,
                 description,
                 category,
@@ -138,13 +132,20 @@ const AddPortfolioModal = ({ onClose, onAdd }: { onClose: () => void, onAdd: () 
                 visible,
                 media: [{ type: mediaType, url: mediaUrl }],
                 thumbnailUrl: '',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
                 ownerId: ''
             };
 
-            existingItems.push(newItem);
-            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
+            const response = await fetch('/api/portfolio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newItem),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add portfolio item');
+            }
 
             onAdd();
         } catch (err) {
@@ -256,27 +257,26 @@ const EditPortfolioModal = ({ item, onClose, onUpdate }: { item: PortfolioItem, 
         setError(null);
 
         try {
-            const storedData = localStorage.getItem('portfolioItems');
-            if (!storedData) throw new Error('No portfolio data found');
-
-            const existingItems = JSON.parse(storedData);
-            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
-
-            if (itemIndex === -1) throw new Error('Portfolio item not found');
-
             const updatedItem = {
-                ...existingItems[itemIndex],
                 title,
                 description,
                 category,
                 order,
                 visible,
                 media: [{ type: mediaType, url: mediaUrl }],
-                updatedAt: new Date().toISOString(),
             };
 
-            existingItems[itemIndex] = updatedItem;
-            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
+            const response = await fetch(`/api/portfolio/${item.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedItem),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update portfolio item');
+            }
 
             onUpdate();
         } catch (err) {
@@ -380,14 +380,17 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
     const [activeTab, setActiveTab] = useState<'portfolio' | 'quotes'>('portfolio');
 
-    const fetchPortfolioItems = () => {
+    const fetchPortfolioItems = async () => {
         try {
-            const storedData = localStorage.getItem('portfolioItems');
-            if (storedData) {
-                const data = JSON.parse(storedData);
-                setPortfolioItems(data);
+            const response = await fetch('/api/portfolio');
+            if (response.ok) {
+                const data = await response.json();
+                // Sort by order for display in admin
+                const sortedData = data.sort((a: PortfolioItem, b: PortfolioItem) => a.order - b.order);
+                setPortfolioItems(sortedData);
             } else {
-                // Initialize with default items if none exist
+                console.warn('Failed to fetch from API, using fallback data');
+                // Fallback to default items if API fails
                 const defaultItems: PortfolioItem[] = [
                     {
                         id: 1,
@@ -401,38 +404,12 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
                         createdAt: "2025-12-26T10:00:00.000Z",
                         updatedAt: "2025-12-26T10:00:00.000Z",
                         ownerId: ""
-                    },
-                    {
-                        id: 2,
-                        title: "Corporate Interview Reel",
-                        description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
-                        category: "Interviews",
-                        order: 2,
-                        visible: true,
-                        media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
-                        thumbnailUrl: "",
-                        createdAt: "2025-12-26T10:00:00.000Z",
-                        updatedAt: "2025-12-26T10:00:00.000Z",
-                        ownerId: ""
-                    },
-                    {
-                        id: 3,
-                        title: "Viral Social Media Reel",
-                        description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
-                        category: "Reels",
-                        order: 3,
-                        visible: true,
-                        media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
-                        thumbnailUrl: "",
-                        createdAt: "2025-12-26T10:00:00.000Z",
-                        updatedAt: "2025-12-26T10:00:00.000Z",
-                        ownerId: ""
                     }
                 ];
-                localStorage.setItem('portfolioItems', JSON.stringify(defaultItems));
                 setPortfolioItems(defaultItems);
             }
         } catch (err) {
+            console.error('Error fetching portfolio items:', err);
             if (err instanceof Error) {
                 setError(err.message);
             } else {
@@ -462,13 +439,14 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
     const handleDelete = async (itemId: number) => {
         if (window.confirm('Are you sure you want to delete this portfolio item?')) {
             try {
-                const storedData = localStorage.getItem('portfolioItems');
-                if (!storedData) throw new Error('No portfolio data found');
+                const response = await fetch(`/api/portfolio/${itemId}`, {
+                    method: 'DELETE',
+                });
 
-                const existingItems = JSON.parse(storedData);
-                const filteredItems = existingItems.filter((item: PortfolioItem) => item.id !== itemId);
+                if (!response.ok) {
+                    throw new Error('Failed to delete portfolio item');
+                }
 
-                localStorage.setItem('portfolioItems', JSON.stringify(filteredItems));
                 fetchPortfolioItems();
             } catch (err) {
                 if (err instanceof Error) {
@@ -489,22 +467,23 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
         if (!targetItem) return;
 
         try {
-            const storedData = localStorage.getItem('portfolioItems');
-            if (!storedData) throw new Error('No portfolio data found');
+            // Update both items via API
+            await Promise.all([
+                fetch(`/api/portfolio/${item.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...item, order: targetOrder }),
+                }),
+                fetch(`/api/portfolio/${targetItem.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...targetItem, order: item.order }),
+                })
+            ]);
 
-            const existingItems = JSON.parse(storedData);
-            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
-            const targetIndex = existingItems.findIndex((i: PortfolioItem) => i.id === targetItem.id);
-
-            if (itemIndex === -1 || targetIndex === -1) return;
-
-            // Swap orders
-            existingItems[itemIndex] = { ...existingItems[itemIndex], order: targetOrder, updatedAt: new Date().toISOString() };
-            existingItems[targetIndex] = { ...existingItems[targetIndex], order: item.order, updatedAt: new Date().toISOString() };
-
-            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
             fetchPortfolioItems();
         } catch (err) {
+            console.error('Failed to reorder items:', err);
             setError('Failed to reorder items');
         }
     };
@@ -518,39 +497,63 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
         if (!targetItem) return;
 
         try {
-            const storedData = localStorage.getItem('portfolioItems');
-            if (!storedData) throw new Error('No portfolio data found');
+            // Update both items via API
+            await Promise.all([
+                fetch(`/api/portfolio/${item.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...item, order: targetOrder }),
+                }),
+                fetch(`/api/portfolio/${targetItem.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...targetItem, order: item.order }),
+                })
+            ]);
 
-            const existingItems = JSON.parse(storedData);
-            const itemIndex = existingItems.findIndex((i: PortfolioItem) => i.id === item.id);
-            const targetIndex = existingItems.findIndex((i: PortfolioItem) => i.id === targetItem.id);
-
-            if (itemIndex === -1 || targetIndex === -1) return;
-
-            // Swap orders
-            existingItems[itemIndex] = { ...existingItems[itemIndex], order: targetOrder, updatedAt: new Date().toISOString() };
-            existingItems[targetIndex] = { ...existingItems[targetIndex], order: item.order, updatedAt: new Date().toISOString() };
-
-            localStorage.setItem('portfolioItems', JSON.stringify(existingItems));
             fetchPortfolioItems();
         } catch (err) {
+            console.error('Failed to reorder items:', err);
             setError('Failed to reorder items');
         }
     };
 
     const fetchQuotes = async () => {
-        // Contact form submissions are sent via Formspree to email
-        // Setting empty array since we don't store submissions locally
-        setQuotes([]);
+        try {
+            const response = await fetch('/api/quotes');
+            if (response.ok) {
+                const quotesData = await response.json();
+                setQuotes(quotesData);
+            } else {
+                console.warn('Failed to fetch quotes from API');
+                setQuotes([]);
+            }
+        } catch (error) {
+            console.error('Error fetching quotes:', error);
+            setQuotes([]);
+        }
     };
 
     const updateQuoteStatus = async (quoteId: string, status: 'pending' | 'contacted' | 'completed') => {
         try {
-            // For now, we'll update the local state. In a full implementation, you'd have a PUT endpoint
-            setQuotes(quotes.map(quote =>
-                quote.id === quoteId ? { ...quote, status } : quote
-            ));
+            const response = await fetch('/api/quotes', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: quoteId, status }),
+            });
+
+            if (response.ok) {
+                const updatedQuote = await response.json();
+                setQuotes(quotes.map(quote =>
+                    quote.id === quoteId ? updatedQuote : quote
+                ));
+            } else {
+                setError('Failed to update quote status');
+            }
         } catch (err) {
+            console.error('Error updating quote status:', err);
             setError('Failed to update quote status');
         }
     };
@@ -651,23 +654,75 @@ const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
                     </div>
                 ) : (
                     <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-                        <div className="p-8 text-center">
-                            <div className="text-6xl mb-4">📧</div>
-                            <h3 className="text-xl font-semibold text-white mb-2">Contact Form Submissions</h3>
-                            <p className="text-gray-400 mb-4">
-                                All contact form submissions are automatically sent to your email via Formspree.
-                            </p>
-                            <div className="bg-gray-700 rounded-lg p-4 text-left max-w-md mx-auto">
-                                <p className="text-sm text-gray-300">
-                                    <strong>Email:</strong> vikaskurre80@gmail.com<br/>
-                                    <strong>Service:</strong> Formspree + SendGrid<br/>
-                                    <strong>Status:</strong> ✅ Working
+                        {quotes.length > 0 ? (
+                            <table className="min-w-full">
+                                <thead className="bg-gray-700 text-sm text-gray-400 uppercase">
+                                    <tr>
+                                        <th className="p-4 text-left">Name</th>
+                                        <th className="p-4 text-left">Contact</th>
+                                        <th className="p-4 text-left">Project</th>
+                                        <th className="p-4 text-left">Status</th>
+                                        <th className="p-4 text-left">Date</th>
+                                        <th className="p-4 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-700">
+                                    {quotes.map(quote => (
+                                        <tr key={quote.id}>
+                                            <td className="p-4 text-white font-medium">{quote.name}</td>
+                                            <td className="p-4 text-gray-300">{quote.emailWhatsApp}</td>
+                                            <td className="p-4 text-gray-300 max-w-xs truncate" title={quote.projectDetails}>
+                                                {quote.projectDetails.substring(0, 50)}...
+                                            </td>
+                                            <td className="p-4">
+                                                <select
+                                                    value={quote.status}
+                                                    onChange={(e) => updateQuoteStatus(quote.id, e.target.value as 'pending' | 'contacted' | 'completed')}
+                                                    className="bg-gray-600 text-white text-sm rounded px-2 py-1 border border-gray-500"
+                                                >
+                                                    <option value="pending">Pending</option>
+                                                    <option value="contacted">Contacted</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                            </td>
+                                            <td className="p-4 text-gray-400 text-sm">
+                                                {new Date(quote.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="p-4">
+                                                <button
+                                                    onClick={() => {
+                                                        const details = `Name: ${quote.name}\nContact: ${quote.emailWhatsApp}\nProject: ${quote.projectDetails}\nReference: ${quote.referenceStyle || 'N/A'}\nFootage: ${quote.rawFootageLink || 'N/A'}\nStatus: ${quote.status}`;
+                                                        navigator.clipboard.writeText(details);
+                                                        alert('Quote details copied to clipboard!');
+                                                    }}
+                                                    className="text-blue-400 hover:text-blue-300 text-sm"
+                                                >
+                                                    Copy Details
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div className="p-8 text-center">
+                                <div className="text-6xl mb-4">📧</div>
+                                <h3 className="text-xl font-semibold text-white mb-2">Quote Requests</h3>
+                                <p className="text-gray-400 mb-4">
+                                    Contact form submissions will appear here. All submissions are also sent to your email.
+                                </p>
+                                <div className="bg-gray-700 rounded-lg p-4 text-left max-w-md mx-auto">
+                                    <p className="text-sm text-gray-300">
+                                        <strong>Email:</strong> vikaskurre80@gmail.com<br/>
+                                        <strong>Status:</strong> ✅ Active<br/>
+                                        <strong>Storage:</strong> Database + Email
+                                    </p>
+                                </div>
+                                <p className="text-sm text-gray-500 mt-4">
+                                    No quote requests yet. They will appear here when submitted!
                                 </p>
                             </div>
-                            <p className="text-sm text-gray-500 mt-4">
-                                Check your email inbox for all contact form submissions!
-                            </p>
-                        </div>
+                        )}
                     </div>
                 )}
             </main>

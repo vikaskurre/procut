@@ -1,8 +1,87 @@
 // src/app/portfolio/page.tsx
-"use client";
-import React, { useState, useEffect } from 'react';
+import { MongoClient } from 'mongodb';
 
-// Updated interface to match the new structure in db.json
+const MONGODB_URI = process.env.MONGODB_URI;
+const DB_NAME = 'procut-portfolio';
+const COLLECTION_NAME = 'portfolio';
+
+async function getPortfolioCollection() {
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not set');
+  }
+
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  const db = client.db(DB_NAME);
+  return { collection: db.collection(COLLECTION_NAME), client };
+}
+
+async function getPortfolioData() {
+  try {
+    const { collection, client } = await getPortfolioCollection();
+
+    const portfolioItems = await collection
+      .find({ visible: true })
+      .sort({ order: 1 })
+      .toArray();
+
+    await client.close();
+
+    // Transform MongoDB documents to match frontend interface
+    const transformedItems = portfolioItems.map((item: any) => ({
+      ...item,
+      id: item.id || item._id.toString(),
+      _id: undefined // Remove MongoDB _id from response
+    }));
+
+    return transformedItems;
+  } catch (error) {
+    console.error('Error fetching portfolio from MongoDB:', error);
+    // Fallback to default items if MongoDB fails
+    return [
+      {
+        id: 1,
+        title: "Luxury Real Estate Drone Footage",
+        description: "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
+        category: "Real Estate",
+        order: 1,
+        visible: true,
+        media: [{ type: "video", url: "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400" }],
+        thumbnailUrl: "",
+        createdAt: "2025-12-26T10:00:00.000Z",
+        updatedAt: "2025-12-26T10:00:00.000Z",
+        ownerId: ""
+      },
+      {
+        id: 2,
+        title: "Corporate Interview Reel",
+        description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
+        category: "Interviews",
+        order: 2,
+        visible: true,
+        media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
+        thumbnailUrl: "",
+        createdAt: "2025-12-26T10:00:00.000Z",
+        updatedAt: "2025-12-26T10:00:00.000Z",
+        ownerId: ""
+      },
+      {
+        id: 3,
+        title: "Viral Social Media Reel",
+        description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
+        category: "Reels",
+        order: 3,
+        visible: true,
+        media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
+        thumbnailUrl: "",
+        createdAt: "2025-12-26T10:00:00.000Z",
+        updatedAt: "2025-12-26T10:00:00.000Z",
+        ownerId: ""
+      }
+    ];
+  }
+}
+
 interface PortfolioItem {
   id: number;
   title: string;
@@ -89,79 +168,8 @@ const VideoPlayer = ({ src, poster }: { src: string; poster: string }) => {
   );
 };
 
-// Client-side portfolio management using localStorage
-
-const PortfolioPage = () => {
-  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Load portfolio data from localStorage
-    const loadPortfolioData = () => {
-      try {
-        const storedData = localStorage.getItem('portfolioItems');
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          // Filter for visible items and sort by order
-          const filteredItems = parsedData
-            .filter((item: PortfolioItem) => item.visible === true)
-            .sort((a: PortfolioItem, b: PortfolioItem) => a.order - b.order);
-          setPortfolioItems(filteredItems);
-        } else {
-          // Default portfolio items if none exist
-          const defaultItems: PortfolioItem[] = [
-            {
-              id: 1,
-              title: "Luxury Real Estate Drone Footage",
-              description: "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
-              category: "Real Estate",
-              order: 1,
-              visible: true,
-              media: [{ type: "video", url: "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400" }],
-              thumbnailUrl: "",
-              createdAt: "2025-12-26T10:00:00.000Z",
-              updatedAt: "2025-12-26T10:00:00.000Z",
-              ownerId: ""
-            },
-            {
-              id: 2,
-              title: "Corporate Interview Reel",
-              description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
-              category: "Interviews",
-              order: 2,
-              visible: true,
-              media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
-              thumbnailUrl: "",
-              createdAt: "2025-12-26T10:00:00.000Z",
-              updatedAt: "2025-12-26T10:00:00.000Z",
-              ownerId: ""
-            },
-            {
-              id: 3,
-              title: "Viral Social Media Reel",
-              description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
-              category: "Reels",
-              order: 3,
-              visible: true,
-              media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
-              thumbnailUrl: "",
-              createdAt: "2025-12-26T10:00:00.000Z",
-              updatedAt: "2025-12-26T10:00:00.000Z",
-              ownerId: ""
-            }
-          ];
-          localStorage.setItem('portfolioItems', JSON.stringify(defaultItems));
-          setPortfolioItems(defaultItems.filter(item => item.visible).sort((a, b) => a.order - b.order));
-        }
-      } catch (error) {
-        console.error('Error loading portfolio data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPortfolioData();
-  }, []);
+export default async function PortfolioPage() {
+  const portfolioItems = await getPortfolioData();
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -174,12 +182,12 @@ const PortfolioPage = () => {
             Check out some of the projects we're proud to have worked on.
           </p>
         </div>
-        
+
         {portfolioItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {portfolioItems.map((item) => (
-              <div 
-                key={item.id} 
+            {portfolioItems.map((item: PortfolioItem) => (
+              <div
+                key={item.id}
                 className="bg-gray-900 border border-gray-800 overflow-hidden transition-all duration-300 ease-in-out hover:border-gray-600 group"
               >
                 <div className="relative">
@@ -206,6 +214,4 @@ const PortfolioPage = () => {
       </div>
     </div>
   );
-};
-
-export default PortfolioPage;
+}

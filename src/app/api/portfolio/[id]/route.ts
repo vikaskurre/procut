@@ -1,64 +1,83 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
+import { MongoClient } from 'mongodb';
 
-const dbPath = path.join(process.cwd(), 'db.json');
+const MONGODB_URI = process.env.MONGODB_URI;
+const DB_NAME = 'procut-portfolio';
+const COLLECTION_NAME = 'portfolio';
 
-async function readDb() {
-  try {
-    const data = await fs.readFile(dbPath, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    if ((error as any).code === 'ENOENT') {
-      return { portfolio: [] };
-    }
-    throw error;
+async function getPortfolioCollection() {
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not set');
   }
-}
 
-async function writeDb(data: any) {
-  await fs.writeFile(dbPath, JSON.stringify(data, null, 2));
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  const db = client.db(DB_NAME);
+  return { collection: db.collection(COLLECTION_NAME), client };
 }
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const db = await readDb();
-  const item = db.portfolio.find((p: any) => p.id === parseInt(params.id));
+  try {
+    const { collection, client } = await getPortfolioCollection();
 
-  if (!item) {
-    return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    const item = await collection.findOne({ id: parseInt(params.id) });
+
+    await client.close();
+
+    if (!item) {
+      return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(item);
+  } catch (error) {
+    console.error('Error fetching portfolio item:', error);
+    return NextResponse.json({ error: 'Failed to fetch portfolio item' }, { status: 500 });
   }
-
-  return NextResponse.json(item);
 }
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
-  const db = await readDb();
-  const index = db.portfolio.findIndex((p: any) => p.id === parseInt(params.id));
+  try {
+    const { collection, client } = await getPortfolioCollection();
+    const updateData = await request.json();
 
-  if (index === -1) {
-    return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    // Add updatedAt timestamp
+    updateData.updatedAt = new Date().toISOString();
+
+    const result = await collection.updateOne(
+      { id: parseInt(params.id) },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      await client.close();
+      return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    }
+
+    await client.close();
+
+    return NextResponse.json({ message: 'Portfolio item updated successfully' });
+  } catch (error) {
+    console.error('Error updating portfolio item:', error);
+    return NextResponse.json({ error: 'Failed to update portfolio item' }, { status: 500 });
   }
-
-  const updatedItem = await request.json();
-  // Ensure the ID is not changed
-  updatedItem.id = parseInt(params.id);
-  db.portfolio[index] = updatedItem;
-
-  await writeDb(db);
-
-  return NextResponse.json(updatedItem);
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const db = await readDb();
-  const initialLength = db.portfolio.length;
-  db.portfolio = db.portfolio.filter((p: any) => p.id !== parseInt(params.id));
+  try {
+    const { collection, client } = await getPortfolioCollection();
 
-  if (db.portfolio.length === initialLength) {
-    return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    const result = await collection.deleteOne({ id: parseInt(params.id) });
+
+    if (result.deletedCount === 0) {
+      await client.close();
+      return NextResponse.json({ message: 'Portfolio item not found' }, { status: 404 });
+    }
+
+    await client.close();
+
+    return new NextResponse(null, { status: 204 }); // No Content
+  } catch (error) {
+    console.error('Error deleting portfolio item:', error);
+    return NextResponse.json({ error: 'Failed to delete portfolio item' }, { status: 500 });
   }
-
-  await writeDb(db);
-
-  return new NextResponse(null, { status: 204 }); // No Content
 }

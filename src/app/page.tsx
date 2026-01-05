@@ -34,20 +34,11 @@ export default function Home() {
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-start bg-black text-white overflow-hidden">
-      {/* Video Background */}
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        src="/hero-video.mp4" // Placeholder: User needs to replace with actual video path (e.g., from CDN)
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        Your browser does not support the video tag.
-      </video>
+      {/* Gradient Background (Video Placeholder) */}
+      <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"></div>
 
       {/* Overlay for readability and dark theme */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70 z-10"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
 
       {/* Floating Elements (Animated with Framer Motion) */}
       <motion.div
