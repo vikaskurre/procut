@@ -1,20 +1,21 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
 
-const dbPath = path.join(process.cwd(), 'db.json');
-
-async function readDb() {
-    const data = await fs.readFile(dbPath, 'utf-8');
-    return JSON.parse(data);
-}
+// Hardcoded user credentials for Netlify compatibility
+const users = [
+  {
+    id: 'user-1-owner',
+    email: 'vikaskurre80@gmail.com',
+    password: 'procut1000cr',
+    name: 'Vikas Kurre',
+    role: 'Owner'
+  }
+];
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
-    const db = await readDb();
 
-    const user = db.users.find((u: any) => u.email === email && u.password === password);
+    const user = users.find((u: any) => u.email === email && u.password === password);
 
     if (user) {
       // In a real app, you'd issue a token (e.g., JWT)
