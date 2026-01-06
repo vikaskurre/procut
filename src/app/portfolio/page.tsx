@@ -1,86 +1,72 @@
 // src/app/portfolio/page.tsx
-import { MongoClient } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = 'procut-portfolio';
-const COLLECTION_NAME = 'portfolio';
-
-async function getPortfolioCollection() {
-  if (!MONGODB_URI) {
-    throw new Error('MONGODB_URI environment variable is not set');
+const getPortfolioData = (): PortfolioItem[] => [
+  {
+    id: 1,
+    title: "Luxury Real Estate Drone Footage",
+    description: "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
+    category: "Real Estate" as const,
+    order: 1,
+    visible: true,
+    media: [{ type: "video", url: "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400" }],
+    thumbnailUrl: "",
+    createdAt: "2025-12-26T10:00:00.000Z",
+    updatedAt: "2025-12-26T10:00:00.000Z",
+    ownerId: ""
+  },
+  {
+    id: 2,
+    title: "Corporate Interview Reel",
+    description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
+    category: "Interviews" as const,
+    order: 2,
+    visible: true,
+    media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
+    thumbnailUrl: "",
+    createdAt: "2025-12-26T10:00:00.000Z",
+    updatedAt: "2025-12-26T10:00:00.000Z",
+    ownerId: ""
+  },
+  {
+    id: 3,
+    title: "Viral Social Media Reel",
+    description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
+    category: "Reels" as const,
+    order: 3,
+    visible: true,
+    media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
+    thumbnailUrl: "",
+    createdAt: "2025-12-26T10:00:00.000Z",
+    updatedAt: "2025-12-26T10:00:00.000Z",
+    ownerId: ""
+  },
+  {
+    id: 4,
+    title: "Brand Commercial Campaign",
+    description: "Complete brand storytelling through visual narrative. From concept to final delivery with professional post-production.",
+    category: "Ads" as const,
+    order: 4,
+    visible: true,
+    media: [{ type: "video", url: "https://youtu.be/miBDRJuQ6Cs?si=mqcJHwOublgVU3qf" }],
+    thumbnailUrl: "",
+    createdAt: "2025-12-26T10:00:00.000Z",
+    updatedAt: "2025-12-26T10:00:00.000Z",
+    ownerId: ""
+  },
+  {
+    id: 5,
+    title: "Cinematic Wedding Film",
+    description: "Emotional storytelling through cinematic wedding photography. Artistic composition and professional editing for memorable moments.",
+    category: "Cinematic" as const,
+    order: 5,
+    visible: true,
+    media: [{ type: "video", url: "https://youtu.be/4rpSmRU-Yi8?si=71Q_8W9UcdYoOg7q" }],
+    thumbnailUrl: "",
+    createdAt: "2025-12-26T10:00:00.000Z",
+    updatedAt: "2025-12-26T10:00:00.000Z",
+    ownerId: ""
   }
-
-  const client = new MongoClient(MONGODB_URI);
-  await client.connect();
-  const db = client.db(DB_NAME);
-  return { collection: db.collection(COLLECTION_NAME), client };
-}
-
-async function getPortfolioData() {
-  try {
-    const { collection, client } = await getPortfolioCollection();
-
-    const portfolioItems = await collection
-      .find({ visible: true })
-      .sort({ order: 1 })
-      .toArray();
-
-    await client.close();
-
-    // Transform MongoDB documents to match frontend interface
-    const transformedItems = portfolioItems.map((item: any) => ({
-      ...item,
-      id: item.id || item._id.toString(),
-      _id: undefined // Remove MongoDB _id from response
-    }));
-
-    return transformedItems;
-  } catch (error) {
-    console.error('Error fetching portfolio from MongoDB:', error);
-    // Fallback to default items if MongoDB fails
-    return [
-      {
-        id: 1,
-        title: "Luxury Real Estate Drone Footage",
-        description: "Professional aerial cinematography for high-end real estate showcasing. Capturing stunning landscapes and property features with cinematic angles.",
-        category: "Real Estate",
-        order: 1,
-        visible: true,
-        media: [{ type: "video", url: "https://youtu.be/DKrIVfpWAqE?si=JTui1srQWV2ny400" }],
-        thumbnailUrl: "",
-        createdAt: "2025-12-26T10:00:00.000Z",
-        updatedAt: "2025-12-26T10:00:00.000Z",
-        ownerId: ""
-      },
-      {
-        id: 2,
-        title: "Corporate Interview Reel",
-        description: "Professional interview production for corporate clients. High-quality lighting, sound, and editing for executive presentations.",
-        category: "Interviews",
-        order: 2,
-        visible: true,
-        media: [{ type: "video", url: "https://youtu.be/GzHI1R4KIsk?si=vPA8-eKFIfw202Bm" }],
-        thumbnailUrl: "",
-        createdAt: "2025-12-26T10:00:00.000Z",
-        updatedAt: "2025-12-26T10:00:00.000Z",
-        ownerId: ""
-      },
-      {
-        id: 3,
-        title: "Viral Social Media Reel",
-        description: "Engaging short-form content optimized for Instagram and TikTok. Fast-paced editing with trending music and effects.",
-        category: "Reels",
-        order: 3,
-        visible: true,
-        media: [{ type: "video", url: "https://youtu.be/UmuvFYXHAFA?si=uDrIUBTB0_hAx4X-" }],
-        thumbnailUrl: "",
-        createdAt: "2025-12-26T10:00:00.000Z",
-        updatedAt: "2025-12-26T10:00:00.000Z",
-        ownerId: ""
-      }
-    ];
-  }
-}
+];
 
 interface PortfolioItem {
   id: number;
