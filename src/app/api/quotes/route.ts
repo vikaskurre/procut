@@ -1,17 +1,20 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { MongoClient } from 'mongodb';
 import nodemailer from 'nodemailer';
 
-const dbPath = path.join(process.cwd(), 'db.json');
+const MONGODB_URI = process.env.MONGODB_URI;
+const DB_NAME = 'procut-portfolio';
+const COLLECTION_NAME = 'quotes';
 
-async function readDb() {
-    const data = await fs.readFile(dbPath, 'utf-8');
-    return JSON.parse(data);
-}
+async function getQuotesCollection() {
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not set');
+  }
 
-async function writeDb(data: any) {
-  await fs.writeFile(dbPath, JSON.stringify(data, null, 2), 'utf-8');
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  const db = client.db(DB_NAME);
+  return { collection: db.collection(COLLECTION_NAME), client };
 }
 
 async function sendNotificationEmail(quote: any) {
@@ -57,7 +60,7 @@ Please review and respond to this quote request.
 
 export async function POST(request: Request) {
     try {
-        const db = await readDb();
+        const { collection, client } = await getQuotesCollection();
         const newQuote = await request.json();
 
         // Basic validation
@@ -72,12 +75,8 @@ export async function POST(request: Request) {
             status: 'pending' // pending, contacted, completed, etc.
         };
 
-        if (!db.quotes) {
-            db.quotes = [];
-        }
-
-        db.quotes.push(quoteWithId);
-        await writeDb(db);
+        await collection.insertOne(quoteWithId);
+        await client.close();
 
         // Send notification email
         sendNotificationEmail(quoteWithId);
@@ -85,17 +84,40 @@ export async function POST(request: Request) {
         return NextResponse.json(quoteWithId, { status: 201 });
     } catch (error) {
         console.error('Error creating quote:', error);
-        return NextResponse.json({ message: 'Error creating quote' }, { status: 500 });
+        // Fallback: if MongoDB fails, still send email but don't save to DB
+        try {
+            const newQuote = await request.json();
+            const quoteWithId = {
+                ...newQuote,
+                id: crypto.randomUUID(),
+                createdAt: new Date().toISOString(),
+                status: 'pending'
+            };
+            sendNotificationEmail(quoteWithId);
+            return NextResponse.json({ ...quoteWithId, note: 'Quote received but not saved due to database error' }, { status: 201 });
+        } catch (fallbackError) {
+            console.error('Fallback also failed:', fallbackError);
+            return NextResponse.json({ message: 'Error creating quote' }, { status: 500 });
+        }
     }
 }
 
 export async function GET() {
   try {
-    const db = await readDb();
-    return NextResponse.json(db.quotes || []);
+    const { collection, client } = await getQuotesCollection();
+
+    const quotes = await collection
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    await client.close();
+
+    return NextResponse.json(quotes);
   } catch (error) {
-    console.error('Error reading quotes:', error);
-    return NextResponse.json({ message: 'Error reading database' }, { status: 500 });
+    console.error('Error fetching quotes:', error);
+    // Fallback: return empty array if MongoDB fails
+    return NextResponse.json([]);
   }
 }
 
@@ -107,20 +129,23 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: 'Missing id or status' }, { status: 400 });
     }
 
-    const db = await readDb();
-    if (!db.quotes) {
-      return NextResponse.json({ message: 'No quotes found' }, { status: 404 });
-    }
+    const { collection, client } = await getQuotesCollection();
 
-    const quoteIndex = db.quotes.findIndex((quote: any) => quote.id === id);
-    if (quoteIndex === -1) {
+    const result = await collection.updateOne(
+      { id: id },
+      { $set: { status: status } }
+    );
+
+    if (result.matchedCount === 0) {
+      await client.close();
       return NextResponse.json({ message: 'Quote not found' }, { status: 404 });
     }
 
-    db.quotes[quoteIndex].status = status;
-    await writeDb(db);
+    // Fetch updated quote
+    const updatedQuote = await collection.findOne({ id: id });
+    await client.close();
 
-    return NextResponse.json(db.quotes[quoteIndex]);
+    return NextResponse.json(updatedQuote);
   } catch (error) {
     console.error('Error updating quote:', error);
     return NextResponse.json({ message: 'Error updating quote' }, { status: 500 });
