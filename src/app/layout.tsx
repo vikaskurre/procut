@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${poppins.variable} ${inter.variable} ${montserrat.variable} font-poppins bg-black text-white`}>
+      <body className={`${poppins.variable} ${inter.variable} ${montserrat.variable} font-poppins bg-black text-white scroll-smooth`}>
         <Header /> {/* Render the Header component */}
         {children}
         <WhatsAppButton />

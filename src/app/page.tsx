@@ -1,7 +1,8 @@
-"use client"; // This is a client component
+"use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link"; // Import Link for navigation
+import Link from "next/link";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 export default function Home() {
   const containerVariants = {
@@ -9,172 +10,361 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
-
-  const floatVariants = {
-    animate: {
-      y: ["0%", "5%", "-5%", "0%"],
-      x: ["0%", "3%", "-3%", "0%"],
-      rotate: [0, 2, -2, 0],
-      transition: {
-        duration: Math.random() * 5 + 5, // Random duration between 5 and 10 seconds
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6 } },
   };
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-start bg-black text-white overflow-hidden">
-      {/* Gradient Background (Video Placeholder) */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-gray-900 via-black to-gray-800"></div>
-
-      {/* Overlay for readability and dark theme */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
-
-      {/* Floating Elements (Animated with Framer Motion) */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-20 h-20 bg-neon-blue opacity-30 rounded-full mix-blend-screen"
-        variants={floatVariants}
-        animate="animate"
-      ></motion.div>
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-neon-purple opacity-30 rounded-full mix-blend-screen"
-        variants={floatVariants}
-        animate="animate"
-      ></motion.div>
-      <motion.div
-        className="absolute top-1/3 right-1/3 w-16 h-16 bg-white opacity-20 rounded-full mix-blend-screen"
-        variants={floatVariants}
-        animate="animate"
-      ></motion.div>
-      {/* Further floating elements would be added here */}
-
-      {/* Hero Content */}
-      <motion.div
-        className="relative z-20 flex flex-col items-center justify-center text-center p-4 min-h-screen w-full max-w-7xl px-4 md:px-8 pt-24" // Added pt-24 to ensure content starts below any potential header
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.p className="text-xl md:text-2xl text-neon-blue font-semibold mb-4" variants={itemVariants}>
-          ⭐ ULTRA-PREMIUM VIDEO EDITOR SERVICES
-        </motion.p>
-        <motion.h1
-          className="text-4xl md:text-7xl font-bold text-white leading-tight mb-4"
-          variants={itemVariants}
+    <main className="bg-black text-white font-light">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          autoPlay
+          muted
+          loop
+          playsInline
         >
-          <span className="block">Elevating Your Brand Through</span>
-          <motion.span className="block text-neon-purple" variants={itemVariants}>
-            Premium Cinematic Editing
-          </motion.span>
-        </motion.h1>
-        <motion.p
-          className="mt-6 text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed"
-          variants={itemVariants}
+          <source src="/showreel.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black opacity-40 z-10"></div>
+        <motion.div
+          className="relative z-10 text-center max-w-4xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          I create high-performance, visually refined videos for creators, startups, and global brands — focused on clean aesthetics, smooth motion, and modern sound design inspired by Apple-style visuals.
-        </motion.p>
-        <motion.div className="mt-10 flex gap-4" variants={itemVariants}>
-          <Link href="/contact">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-neon-purple text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 border border-transparent hover:border-neon-blue"
-            >
-              Get a Custom Quote
-            </motion.button>
-          </Link>
-          <Link href="/portfolio">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-transparent text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 border border-white hover:border-neon-blue"
-            >
-              View Premium Portfolio
-            </motion.button>
-          </Link>
+          <motion.h1
+            className="text-4xl md:text-6xl font-bold leading-tight mb-6 tracking-tight"
+            variants={itemVariants}
+          >
+            Cinematic Video Editing for Modern Brands
+          </motion.h1>
+          <motion.p
+            className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
+            variants={itemVariants}
+          >
+            High-end video editing crafted for creators, startups, and companies worldwide.
+          </motion.p>
+          <motion.div
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+            variants={itemVariants}
+          >
+            <Link href="/portfolio">
+              <button className="px-8 py-4 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors duration-300">
+                View Work
+              </button>
+            </Link>
+            <Link href="/contact">
+              <button className="px-8 py-4 border border-white text-white font-medium rounded-lg hover:bg-white hover:text-black transition-all duration-300">
+                Get a Quote
+              </button>
+            </Link>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </section>
 
-      {/* Why Premium Clients Work With Me Section */}
-      <motion.section
-        className="relative z-20 w-full max-w-7xl px-4 md:px-8 py-20 bg-gray-950/70 backdrop-blur-sm rounded-lg my-10"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-neon-blue mb-12">
-          🚀 WHY PREMIUM CLIENTS WORK WITH ME
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            'Apple-inspired clean aesthetic',
-            'Fast delivery without compromising quality',
-            'Clear & consistent communication',
-            'International editing standards',
-            '100+ premium SFX & transition library',
-            'Pixel-perfect timing & sound sync',
-            'Final delivery in Full HD / 4K',
-          ].map((reason, index) => (
-            <motion.div
-              key={index}
-              className="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700 hover:border-neon-purple transition-all duration-300"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <p className="text-xl text-gray-200 font-medium">{reason}</p>
-            </motion.div>
-          ))}
+      {/* Trust Snapshot */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            className="text-2xl md:text-3xl font-medium text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            🌍 Working with International Clients
+          </motion.h2>
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              { icon: "🎬", title: "300+ Projects Delivered", desc: "" },
+              { icon: "⚡", title: "Fast & Reliable Turnaround", desc: "" },
+              { icon: "⭐", title: "Consistent 5-Star Feedback", desc: "" },
+              { icon: "🌎", title: "", desc: "Trusted by creators and businesses worldwide." },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="text-center"
+                variants={itemVariants}
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-medium mb-2">{item.title}</h3>
+                {item.desc && <p className="text-gray-400">{item.desc}</p>}
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* My Premium Work Process Section */}
-      <motion.section
-        className="relative z-20 w-full max-w-7xl px-4 md:px-8 py-20 bg-gray-950/70 backdrop-blur-sm rounded-lg mb-20"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-neon-purple mb-12">
-          🧠 MY PREMIUM WORK PROCESS
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {[
-            { step: '1. Discovery Call / Chat', desc: 'Understanding your brand tone, audience & objective.' },
-            { step: '2. Creative Direction', desc: 'References, moodboard & music style alignment.' },
-            { step: '3. First Cut Delivery', desc: 'Cinematic pacing with premium transitions.' },
-            { step: '4. Revisions (2–3 rounds)', desc: 'Precision refinements to perfection.' },
-            { step: '5. Final Master Export', desc: 'Optimized HD / 4K delivery — ready to publish.' },
-          ].map((processStep, index) => (
-            <motion.div
-              key={index}
-              className="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700 flex flex-col items-center text-center hover:border-neon-blue transition-all duration-300"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <p className="text-2xl font-bold text-white mb-2">{processStep.step}</p>
-              <p className="text-md text-gray-300">{processStep.desc}</p>
-            </motion.div>
-          ))}
+      {/* Why Clients Choose PROCUT */}
+      <section className="py-20 px-4 bg-gray-900">
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            Why Clients Choose PROCUT
+          </motion.h2>
+          <motion.ul
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              "Apple-inspired clean aesthetic",
+              "International editing standards",
+              "Pixel-perfect timing & sound sync",
+              "Premium SFX & smooth transitions",
+              "Fast delivery without quality loss",
+              "Clear, professional communication",
+            ].map((reason, index) => (
+              <motion.li
+                key={index}
+                className="text-lg text-gray-300"
+                variants={itemVariants}
+              >
+                {reason}
+              </motion.li>
+            ))}
+          </motion.ul>
         </div>
-      </motion.section>
+      </section>
 
+      {/* Services */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Services</h2>
+            <p className="text-lg text-gray-400">Focused. High-end. Purpose-driven.</p>
+          </motion.div>
+          <motion.div
+            className="flex flex-wrap justify-center gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              "Cinematic Video Editing",
+              "Short-Form Content (Reels / Ads)",
+              "YouTube Long-Form Editing",
+              "Brand & Corporate Videos",
+              "Creator Content Editing",
+            ].map((service, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+              >
+                <Link href="/services" className="text-xl text-white hover:text-gray-300 transition-colors duration-300 hover:underline">
+                  {service}
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.div
+            className="text-center mt-12"
+            variants={itemVariants}
+          >
+            <Link href="/pricing">
+              <button className="px-6 py-3 border border-white text-white font-medium rounded-lg hover:bg-white hover:text-black transition-all duration-300">
+                View Pricing
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
+      {/* Selected Work */}
+      <section className="py-20 px-4 bg-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            Selected Work
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-400 text-center mb-12"
+            variants={itemVariants}
+          >
+            A selection of projects crafted for global clients.
+          </motion.p>
+          <motion.div
+            className="flex justify-center gap-4 mb-12"
+            variants={itemVariants}
+          >
+            {["All", "Reels", "YouTube", "Ads", "Brand Films"].map((filter) => (
+              <button key={filter} className="px-4 py-2 border border-gray-600 text-gray-400 hover:border-white hover:text-white transition-all duration-300 rounded">
+                {filter}
+              </button>
+            ))}
+          </motion.div>
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {["Reel Editing", "YouTube", "Ads", "Brand Films", "Cinematic", "Short Form"].map((category, index) => (
+              <motion.div
+                key={index}
+                className="group relative"
+                variants={itemVariants}
+              >
+                <div className="bg-gray-800 h-48 rounded-lg flex items-center justify-center overflow-hidden">
+                  <span className="text-lg font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    {category}
+                  </span>
+                  <span className="text-6xl opacity-20">🎥</span>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.div
+            className="text-center mt-12"
+            variants={itemVariants}
+          >
+            <Link href="/portfolio">
+              <button className="px-6 py-3 border border-white text-white font-medium rounded-lg hover:bg-white hover:text-black transition-all duration-300">
+                View Full Portfolio
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Work Process */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            Work Process
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-400 text-center mb-12"
+            variants={itemVariants}
+          >
+            A Simple, Proven Workflow
+          </motion.p>
+          <motion.div
+            className="relative"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-700"></div>
+            {[
+              { step: "Discovery Call / Brief", desc: "Understanding your brand, audience, and goals." },
+              { step: "Creative Direction", desc: "Style, references, pacing, and music alignment." },
+              { step: "First Cut Delivery", desc: "Clean, cinematic edit with strong storytelling." },
+              { step: "Revisions", desc: "2–3 focused refinement rounds." },
+              { step: "Final Delivery", desc: "Optimized Full HD / 4K export, ready to publish." },
+            ].map((processStep, index) => (
+              <motion.div
+                key={index}
+                className="flex items-start mb-12"
+                variants={itemVariants}
+              >
+                <div className="flex-shrink-0 w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center mr-6 relative z-10">
+                  <span className="text-white text-lg font-bold opacity-60">{index + 1}</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">{processStep.step}</h3>
+                  <p className="text-gray-400">{processStep.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-4 bg-gray-900">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.blockquote
+              className="text-2xl md:text-3xl text-gray-300 italic mb-8"
+              variants={itemVariants}
+            >
+              "PROCUT delivers clean, cinematic edits with great attention to detail. Communication is smooth and delivery is always on point."
+            </motion.blockquote>
+            <motion.p
+              className="text-gray-400"
+              variants={itemVariants}
+            >
+              — International Client
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 px-4 bg-black">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.h2
+              className="text-3xl md:text-4xl font-bold mb-12"
+              variants={itemVariants}
+            >
+              Let’s Elevate Your Content
+            </motion.h2>
+            <motion.div
+              variants={itemVariants}
+            >
+              <Link href="/contact">
+                <button className="px-8 py-4 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors duration-300">
+                  Get a Quote
+                </button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </main>
   );
 }
