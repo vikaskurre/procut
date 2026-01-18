@@ -9,9 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'neon-blue': '#00D1FF',
-        'neon-purple': '#4C00FF',
-        'white': '#FFFFFF',
+        'cinematic-orange': '#FF7A18',
+        'soft-magenta-glow': '#C94BFF',
+        'primary-black': '#050505',
+        'soft-dark': '#0B0B0B',
+        'heading-white': '#FFFFFF',
+        'body-grey': '#BDBDBD',
+        'muted-grey': '#8A8A8A',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

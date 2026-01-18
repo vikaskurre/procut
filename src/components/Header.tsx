@@ -46,22 +46,22 @@ export default function Header() {
       }`}
     >
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-white text-3xl font-bold uppercase">
+        <Link href="/" className="text-heading-white text-3xl font-bold uppercase">
           PROCUT
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-8">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="text-white hover:text-gray-300 transition-colors duration-300 text-lg font-medium">
+            <Link key={link.name} href={link.href} className="text-heading-white hover:text-cinematic-orange transition-colors duration-300 text-lg font-medium">
               {link.name}
             </Link>
           ))}
           <Link href="/contact">
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-2 border border-white text-white text-lg font-medium rounded-full hover:bg-white hover:text-black transition-all duration-300"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-6 py-2 bg-cinematic-orange text-black text-lg font-medium rounded-2xl hover:shadow-lg hover:shadow-cinematic-orange/50 transition-all duration-300"
             >
               Get Quote
             </motion.button>
@@ -69,7 +69,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button className="lg:hidden text-white text-3xl focus:outline-none" onClick={toggleMenu} aria-label="Toggle menu">
+        <button className="lg:hidden text-heading-white text-3xl focus:outline-none" onClick={toggleMenu} aria-label="Toggle menu">
           ☰
         </button>
       </nav>
@@ -80,21 +80,21 @@ export default function Header() {
         animate={isOpen ? "open" : "closed"}
         variants={menuVariants}
         transition={{ duration: 0.3 }}
-        className="lg:hidden absolute top-0 right-0 w-2/3 h-screen bg-black flex flex-col items-center justify-center space-y-8 shadow-xl z-50"
+        className="lg:hidden absolute top-0 right-0 w-2/3 h-screen bg-primary-black flex flex-col items-center justify-center space-y-8 shadow-xl z-50"
       >
-        <button className="absolute top-4 right-4 text-white text-3xl focus:outline-none" onClick={toggleMenu} aria-label="Close menu">
+        <button className="absolute top-4 right-4 text-heading-white text-3xl focus:outline-none" onClick={toggleMenu} aria-label="Close menu">
           ✕
         </button>
         {navLinks.map((link) => (
-          <Link key={link.name} href={link.href} className="text-white text-2xl hover:text-gray-300 transition-colors duration-300" onClick={toggleMenu}>
+          <Link key={link.name} href={link.href} className="text-heading-white text-2xl hover:text-cinematic-orange transition-colors duration-300" onClick={toggleMenu}>
             {link.name}
           </Link>
         ))}
         <Link href="/contact">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 border border-white text-white text-xl font-medium rounded-full hover:bg-white hover:text-black transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-8 py-3 bg-cinematic-orange text-black text-xl font-medium rounded-2xl hover:shadow-lg hover:shadow-cinematic-orange/50 transition-all duration-300"
             onClick={toggleMenu}
           >
             Get Quote
