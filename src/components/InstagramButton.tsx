@@ -4,7 +4,7 @@
 import React from 'react';
 
 const InstagramButton = () => {
-  const instagramUrl = 'https://www.instagram.com/procut_studio'; // Replace with your Instagram username
+  const instagramUrl = 'https://www.instagram.com/procut_pmi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==; // Replace with your Instagram username
 
   return (
     <a
