@@ -207,70 +207,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Work / Proof */}
-      <section className="h-screen flex items-center justify-center px-4 animate-section bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-16 tracking-wider"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Work / Proof
-          </motion.h2>
-          <motion.p
-            className="text-lg text-body-grey text-center mb-12"
-            variants={itemVariants}
-          >
-            ye bolte nahi, dikhaate hain
-          </motion.p>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              { src: "/showreel.mp4", title: "Cinematic Showreel" },
-              { src: "/147290-791334083.mp4", title: "Brand Edit" }
-            ].map((video, index) => (
-              <motion.div
-                key={index}
-                className="work-video group relative overflow-hidden rounded-lg"
-                variants={itemVariants}
-              >
-                <video
-                  className="w-full h-48 object-cover transition-transform duration-300"
-                  muted
-                  loop
-                  playsInline
-                  onMouseEnter={(e) => e.currentTarget.play()}
-                  onMouseLeave={(e) => e.currentTarget.pause()}
-                >
-                  <source src={video.src} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end justify-center pb-4 transition-transform duration-300 transform translate-y-full group-hover:translate-y-0">
-                  <h3 className="text-white text-lg font-medium">{video.title}</h3>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-          <motion.div
-            className="text-center mt-12"
-            variants={itemVariants}
-          >
-            <Link href="/portfolio">
-              <button className="px-6 py-3 border border-white text-white font-medium rounded-lg hover:bg-white hover:text-black transition-all duration-300">
-                View Full Portfolio
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Work Process */}
       <section className="h-screen flex items-center justify-center px-4 animate-section">
         <div className="max-w-4xl mx-auto">
@@ -317,49 +253,6 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Client Reviews */}
-      <section className="h-screen flex items-center justify-center px-4 animate-section bg-gray-900">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-8 tracking-wider"
-              variants={itemVariants}
-            >
-              Client Reviews
-            </motion.h2>
-            <motion.blockquote
-              className="text-2xl md:text-3xl text-body-grey italic mb-8"
-              variants={itemVariants}
-            >
-              "PROCUT doesn't just edit videos — they elevate brands."
-            </motion.blockquote>
-            <motion.p
-              className="text-muted-grey mb-8"
-              variants={itemVariants}
-            >
-              — International Client
-            </motion.p>
-            <motion.blockquote
-              className="text-2xl md:text-3xl text-body-grey italic"
-              variants={itemVariants}
-            >
-              "Fast delivery. Insane quality. Zero compromises."
-            </motion.blockquote>
-            <motion.p
-              className="text-muted-grey"
-              variants={itemVariants}
-            >
-              — Satisfied Customer
-            </motion.p>
           </motion.div>
         </div>
       </section>
