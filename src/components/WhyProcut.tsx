@@ -9,7 +9,7 @@ const WhyProcut = () => {
   const component = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const words = ["gaurav", "vikas", "aishu", "Impact"];
+  const words = ["Precision", "Speed", "Consistency", "Impact"];
 
   useEffect(() => {
     let ctx = gsap.context(() => {
