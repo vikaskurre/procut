@@ -337,7 +337,7 @@ const HeroSection = () => (
           loop
           className="w-full rounded-lg shadow-2xl"
         ></video>
-        <p className="text-sm text-gray-400 mt-4">(30–45 sec): Best 5–7 clips • Auto-play (muted) • Beat-sync highlights</p>
+        <p className="text-sm text-gray-400 mt-4">procut</p>
       </div>
     </div>
   </section>
