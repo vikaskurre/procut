@@ -21,57 +21,9 @@ interface PortfolioItem {
 }
 
 const portfolioData: PortfolioItem[] = [
+ 
   {
     id: 1,
-    title: "Instagram Reel — Fitness Coach (USA)",
-    platform: "Instagram",
-    goal: "Engagement & Retention",
-    style: "Fast cuts, beat sync, dynamic captions",
-    result: "2.1M views in 7 days",
-    category: "Shorts / Reels",
-    media: "/showreel.mp4",
-    videoType: "short",
-    badgeColor: "bg-orange-500",
-    badgeText: "SHORT"
-  },
-  {
-    id: 2,
-    title: "YouTube Long-form — Podcast Edit",
-    platform: "YouTube",
-    goal: "Watch time",
-    style: "Clean cuts, pacing, sound design",
-    category: "YouTube Long-form",
-    media: "/147290-791334083.mp4",
-    videoType: "long",
-    badgeColor: "bg-blue-500",
-    badgeText: "LONG"
-  },
-  {
-    id: 3,
-    title: "Brand Ad — DTC Product",
-    platform: "Meta Ads",
-    goal: "CTR & Conversions",
-    style: "Hook-first storytelling, product focus",
-    category: "Ads / Brand Content",
-    media: "/showreel.mp4",
-    videoType: "long",
-    badgeColor: "bg-purple-500",
-    badgeText: "AD"
-  },
-  {
-    id: 4,
-    title: "Cinematic Short Film — Brand Storytelling",
-    platform: "YouTube",
-    goal: "Brand Awareness",
-    style: "Cinematic angles, emotional pacing",
-    category: "Cinematic / Storytelling",
-    media: "/147290-791334083.mp4",
-    videoType: "long",
-    badgeColor: "bg-blue-500",
-    badgeText: "CINEMATIC"
-  },
-  {
-    id: 5,
     title: "New Portfolio Video",
     platform: "Various",
     goal: "Showcase Work",
@@ -83,7 +35,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 6,
+    id: 2,
     title: "Latest Portfolio Video",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -95,7 +47,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 7,
+    id: 3,
     title: "Another Portfolio Video",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -107,7 +59,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 8,
+    id: 4,
     title: "Additional Portfolio Video",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -119,7 +71,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 9,
+    id: 5,
     title: "More Portfolio Video",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -131,7 +83,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 10,
+    id: 6,
     title: "Portfolio Video 10",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -143,7 +95,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 11,
+    id: 7,
     title: "Portfolio Video 11",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -155,7 +107,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 12,
+    id: 8,
     title: "Portfolio Video 12",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -167,7 +119,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 13,
+    id: 9,
     title: "Portfolio Video 13",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -179,7 +131,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 14,
+    id: 10,
     title: "Portfolio Video 14",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -191,7 +143,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 15,
+    id: 11,
     title: "Portfolio Video 15",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -203,7 +155,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 16,
+    id: 12,
     title: "Portfolio Video 16",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -215,7 +167,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 17,
+    id: 13,
     title: "Portfolio Video 17",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -227,7 +179,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 18,
+    id: 14,
     title: "Portfolio Video 18",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -239,7 +191,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 19,
+    id: 15,
     title: "Portfolio Video 19",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -251,7 +203,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 20,
+    id: 16,
     title: "Portfolio Video 20",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -263,7 +215,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 21,
+    id: 17,
     title: "Portfolio Video 21",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -275,7 +227,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 22,
+    id: 18,
     title: "Portfolio Video 22",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -287,7 +239,7 @@ const portfolioData: PortfolioItem[] = [
     badgeText: "SHORT"
   },
   {
-    id: 23,
+    id: 19,
     title: "Portfolio Video 23",
     platform: "Google Drive",
     goal: "Showcase Work",
@@ -303,7 +255,7 @@ const portfolioData: PortfolioItem[] = [
 const beforeAfterData = [
   {
     raw: "/showreel.mp4",
-    edited: "/147290-791334083.mp4"
+    edited: "https://drive.google.com/file/d/1oZqpTeN39Z_jUKyjR6ZlRGV_ruZIjoC4/view?usp=sharing"
   }
 ];
 
